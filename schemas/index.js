@@ -6,9 +6,17 @@ module.exports = gql`
     files: [File]
   }
 
+  type Mutation {
+    update(
+      slug: String!
+      name: String
+      contents: String
+    ): File
+  }
+
   type File {
     slug: String!
-    name: String!
+    name: String
     contents: String
   }
 `

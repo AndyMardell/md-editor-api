@@ -16,7 +16,7 @@ const fileSchema = new mongoose.Schema({
 })
 
 fileSchema.statics.findBySlug = async function (slug) {
-  const file = await this.findOne({ slug: slug })
+  const file = await this.findOne({ slug })
   if (!file) throw new Error('No file found')
   return file
 }
@@ -24,7 +24,19 @@ fileSchema.statics.findBySlug = async function (slug) {
 fileSchema.statics.findAll = async function () {
   const files = await this.find({})
   if (!files) throw new Error('No files found')
-  return files || false
+  return files
+}
+
+fileSchema.statics.update = async function (file) {
+  try {
+    return this.findOneAndUpdate(
+      { slug: file.slug },
+      file,
+      { upsert: true, setDefaultsOnInsert: true, new: true }
+    )
+  } catch (err) {
+    throw new Error('Update failed')
+  }
 }
 
 const File = mongoose.model('File', fileSchema)
