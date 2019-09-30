@@ -39,6 +39,6 @@ fileSchema.statics.update = async function (file) {
   }
 }
 
-const File = mongoose.model('File', fileSchema)
+fileSchema.set('timestamps', true)
 
-module.exports = File
+module.exports = mongoose.model('File', fileSchema)
